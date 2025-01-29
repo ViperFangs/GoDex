@@ -10,7 +10,7 @@ import (
 type cliCommand struct {
 	name        string
 	description string
-	callback    func() error
+	callback    func(*Config) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -26,12 +26,21 @@ func getCommands() map[string]cliCommand {
 		description: "Print help information",
 		callback:    commandHelp,
 	}
+	commands["map"] = cliCommand{
+		name:        "map",
+		description: "Displays the names of location areas in the Pokemon world",
+		callback:    commandMap,
+	}
 
 	return commands
 }
 
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
+	cfg := &Config{
+		Next:     "https://pokeapi.co/api/v2/location-area/",
+		Previous: "https://pokeapi.co/api/v2/location-area/",
+	}
 
 	for {
 		fmt.Print("GoDex > ")
@@ -43,7 +52,7 @@ func main() {
 		commandName := cleanUserInput[0]
 
 		if command, exists := getCommands()[commandName]; exists {
-			err := command.callback()
+			err := command.callback(cfg)
 			if err != nil {
 				fmt.Println(err)
 			}
