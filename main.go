@@ -28,8 +28,13 @@ func getCommands() map[string]cliCommand {
 	}
 	commands["map"] = cliCommand{
 		name:        "map",
-		description: "Displays the names of location areas in the Pokemon world",
+		description: "Displays the names of the next 20 location areas in the Pokemon world",
 		callback:    commandMap,
+	}
+	commands["mapb"] = cliCommand{
+		name:        "map",
+		description: "Displays the names of the previous 20 location areas in the Pokemon world",
+		callback:    commandMapb,
 	}
 
 	return commands
