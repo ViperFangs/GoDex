@@ -13,10 +13,9 @@ type cliCommand struct {
 	callback    func() error
 }
 
-var commands map[string]cliCommand
+func getCommands() map[string]cliCommand {
+	commands := make(map[string]cliCommand)
 
-func init() {
-	commands = make(map[string]cliCommand)
 	commands["exit"] = cliCommand{
 		name:        "exit",
 		description: "Exit the GoDex",
@@ -27,6 +26,8 @@ func init() {
 		description: "Print help information",
 		callback:    commandHelp,
 	}
+
+	return commands
 }
 
 func main() {
@@ -39,9 +40,13 @@ func main() {
 		scanner.Scan()
 		userInput := scanner.Text()
 		cleanUserInput := cleanInput(userInput)
+		commandName := cleanUserInput[0]
 
-		if command, exists := commands[cleanUserInput[0]]; exists {
-			command.callback()
+		if command, exists := getCommands()[commandName]; exists {
+			err := command.callback()
+			if err != nil {
+				fmt.Println(err)
+			}
 		} else {
 			fmt.Println("Unknown command")
 		}
@@ -52,20 +57,4 @@ func cleanInput(text string) []string {
 	lowered := strings.ToLower(text)
 	words := strings.Fields(lowered)
 	return words
-}
-
-func commandExit() error {
-	fmt.Println("Closing the GoDex... Goodbye!")
-	os.Exit(0)
-	return nil
-}
-
-func commandHelp() error {
-	fmt.Printf("Welcome to the GoDex!\nUsage:\n\n")
-
-	for _, c := range commands {
-		fmt.Printf("%s: %s\n", c.name, c.description)
-	}
-
-	return nil
 }
