@@ -5,19 +5,20 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/viperfangs/godex/internal/pokeapi"
 )
 
 type config struct {
-	Next     string `json:"next"`
-	Previous string `json:"previous"`
+	pokeapiClient pokeapi.Client
+	Next          string
+	Previous      string
 }
 
-func startRepl() {
+func startRepl(cfg *config) {
 	scanner := bufio.NewScanner(os.Stdin)
-	cfg := &config{
-		Next:     "https://pokeapi.co/api/v2/location-area/",
-		Previous: "https://pokeapi.co/api/v2/location-area/",
-	}
+	cfg.Next = "https://pokeapi.co/api/v2/location-area/"
+	cfg.Previous = "https://pokeapi.co/api/v2/location-area/"
 
 	for {
 		fmt.Print("GoDex > ")
@@ -66,12 +67,12 @@ func getCommands() map[string]cliCommand {
 	}
 	commands["map"] = cliCommand{
 		name:        "map",
-		description: "Displays the names of the next 20 location areas in the Pokemon world",
+		description: "Get the next page of locations",
 		callback:    commandMap,
 	}
 	commands["mapb"] = cliCommand{
 		name:        "map",
-		description: "Displays the names of the previous 20 location areas in the Pokemon world",
+		description: "Get the previous page of locations",
 		callback:    commandMapb,
 	}
 
