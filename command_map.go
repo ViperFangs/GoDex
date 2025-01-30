@@ -19,11 +19,6 @@ type Results struct {
 	URL  string `json:"url"`
 }
 
-type config struct {
-	Next     string `json:"next"`
-	Previous string `json:"previous"`
-}
-
 func commandMap(cfg *config) error {
 	resp, err := http.Get(cfg.Next)
 	if err != nil {

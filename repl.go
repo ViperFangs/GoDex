@@ -7,6 +7,11 @@ import (
 	"strings"
 )
 
+type config struct {
+	Next     string `json:"next"`
+	Previous string `json:"previous"`
+}
+
 func startRepl() {
 	scanner := bufio.NewScanner(os.Stdin)
 	cfg := &config{
