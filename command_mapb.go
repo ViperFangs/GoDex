@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func commandMapb(cfg *Config) error {
+func commandMapb(cfg *config) error {
 	resp, err := http.Get(cfg.Previous)
 	if err != nil {
 		return err

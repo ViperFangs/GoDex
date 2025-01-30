@@ -9,7 +9,7 @@ import (
 
 func startRepl() {
 	scanner := bufio.NewScanner(os.Stdin)
-	cfg := &Config{
+	cfg := &config{
 		Next:     "https://pokeapi.co/api/v2/location-area/",
 		Previous: "https://pokeapi.co/api/v2/location-area/",
 	}
@@ -43,7 +43,7 @@ func cleanInput(text string) []string {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*Config) error
+	callback    func(*config) error
 }
 
 func getCommands() map[string]cliCommand {
